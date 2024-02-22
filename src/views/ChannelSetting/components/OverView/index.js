@@ -54,8 +54,9 @@ const ChannelOverView = (props) => {
                         break;
                 }
             })
-            .catch(() => {
-                message.error("编辑频道失败");
+            .catch((e) => {
+                console.log('编辑频道失败', e)
+                message.error(`编辑频道失败, Reason:${e.message}`);
             });
     }
     const getName = (data) => {

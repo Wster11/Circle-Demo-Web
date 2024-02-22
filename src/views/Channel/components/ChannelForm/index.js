@@ -18,9 +18,14 @@ import {
 import Icon from "@/components/Icon";
 
 const channelMode = [
-  { mode: 0, text: "文字频道", icon: "hashtag", color: "rgba(255,255,255,.74)" },
+  {
+    mode: 0,
+    text: "文字频道",
+    icon: "hashtag",
+    color: "rgba(255,255,255,.74)"
+  },
   { mode: 1, text: "语聊房频道", icon: "mic", color: "#fff" }
-]
+];
 const ChannelForm = forwardRef((props, ref) => {
   const { isEdit = false, categoryId, onChange } = props;
   const [form] = Form.useForm();
@@ -28,7 +33,7 @@ const ChannelForm = forwardRef((props, ref) => {
   const [isPublic, setIsPublic] = useState(true);
   const navigate = useNavigate();
 
-  const submit = (onSuccess = () => { }, onError = () => { }) => {
+  const submit = (onSuccess = () => {}, onError = () => {}) => {
     form
       .validateFields()
       .then((values = {}) => {
@@ -73,8 +78,9 @@ const ChannelForm = forwardRef((props, ref) => {
               getChannelDetail(serverId, res.data.channelId);
               onSuccess();
             })
-            .catch(() => {
-              message.error("创建频道失败");
+            .catch((e) => {
+              console.log(e, "创建频道失败");
+              message.error(`创建频道失败, Reason: ${e.message}`);
               onError();
             });
         }
@@ -103,7 +109,7 @@ const ChannelForm = forwardRef((props, ref) => {
           }
         }
       })
-      .catch((e) => { });
+      .catch((e) => {});
   };
 
   useImperativeHandle(ref, () => ({
@@ -117,24 +123,40 @@ const ChannelForm = forwardRef((props, ref) => {
   }, []);
   const [mode, setMode] = useState(0);
   const channelNameChange = (e) => {
-    onChange(e.target.value)
-  }
+    onChange(e.target.value);
+  };
 
   return (
     <Form ref={ref} className="customForm" form={form} layout={"vertical"}>
       <Form.Item label="频道类型" className="formRadioGroup">
         {channelMode.map((item, index) => {
           return (
-            <div className={s.radioItem} key={index}  onClick={() => setMode(index)}>
+            <div
+              className={s.radioItem}
+              key={index}
+              onClick={() => setMode(index)}
+            >
               <div className={s.label}>
-                <div className={s.iconStyle} style={{ background: mode === item.mode ? "#27AE60" : "#1f1f1f" }}><Icon name={item.icon} color={item.color} size="26px"></Icon></div>
-                <span className={s.radioLabel} >{item.text}</span></div>
+                <div
+                  className={s.iconStyle}
+                  style={{
+                    background: mode === item.mode ? "#27AE60" : "#1f1f1f"
+                  }}
+                >
+                  <Icon name={item.icon} color={item.color} size="26px"></Icon>
+                </div>
+                <span className={s.radioLabel}>{item.text}</span>
+              </div>
               <div className={s.radioInput}>
-                {mode !== index && <Icon name="circle" color="#fff" size="22px"></Icon>}
-                {mode === index && <Icon name="radio-01" color="#27AE60" size="22px"></Icon>}
+                {mode !== index && (
+                  <Icon name="circle" color="#fff" size="22px"></Icon>
+                )}
+                {mode === index && (
+                  <Icon name="radio-01" color="#27AE60" size="22px"></Icon>
+                )}
               </div>
             </div>
-          )
+          );
         })}
       </Form.Item>
       <Form.Item label="频道名称" name="name">
@@ -172,13 +194,13 @@ const ChannelForm = forwardRef((props, ref) => {
           <span className={s.tips}>仅通过邀请的用户可以加入私密频道</span>
         </div>
       </Form.Item>
-    </Form >
+    </Form>
   );
 });
 const mapStateToProps = ({ server, channel }) => {
   return {
     channelMap: server.channelMap,
-    categoryId: channel.createChannelCategoryId,
+    categoryId: channel.createChannelCategoryId
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -120,8 +120,9 @@ const ServerOverView = (props) => {
                         break;
                 }
             })
-            .catch(() => {
-                message.error("编辑社区失败");
+            .catch((e) => {
+                console.log(e, '编辑社区失败')
+                message.error(`编辑社区失败, Reason: ${e.message}`);
             });
     }
     const getTags = () => {

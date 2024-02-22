@@ -219,8 +219,9 @@ const SideBar = (props) => {
                     }
                 }
             )
-        }).catch(() => {
-            message.error("创建分组失败，请重试！");
+        }).catch((e) => {
+            console.log(e, '创建分组失败')
+            message.error(`创建分组失败，请重试！Reason:${e.message}`);
         })
     }
     //更新分组

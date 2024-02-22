@@ -67,7 +67,8 @@ const ServerForm = forwardRef((props, ref) => {
             })
             .catch((e) => {
               onError();
-              message.error("创建社区失败");
+              console.log(e, "创建社区失败");
+              message.error(`创建社区失败, Reason: ${e.message}`);
             });
         }
       })
